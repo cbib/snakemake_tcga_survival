@@ -1,0 +1,15 @@
+# filepath: profiles/default/config.yaml
+#printshellcmds: true
+#verbose: true
+#benchmark-extended: true
+executor: slurm
+jobs: 30
+keep-going: true
+rerun-incomplete: true
+scheduler: greedy
+use-conda: true
+latency-wait: 20
+# max resources
+resources:
+  mem_mb: 500000
+  cpus: 100
