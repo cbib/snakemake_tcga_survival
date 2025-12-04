@@ -14,8 +14,8 @@ signatures_file <- args[3]
 project <- args[4]
 survival_table <- args[5]
 GDC_dir <- survival_table %>% dirname() %>% dirname() %>% dirname() %>% dirname() 
-# correct aspect ratio of plots
-FACTOR = DPI / 100
+# # correct aspect ratio of plots
+# FACTOR = DPI / 100
 
 # set working directory to output directory
 setwd(GDC_dir)
@@ -114,7 +114,7 @@ for (signature in colnames(scores)) {
       # keep only required columns
       dds_filtered_surv <- dds_filtered[, c("days_to_death", "s", "type")]
       # convert days to months to ease readability
-      dds_filtered_surv$days_to_death <- dds_filtered_surv$days_to_death / 30.5
+      dds_filtered_surv$days_to_death <- dds_filtered_surv$days_to_death / 365
       # survival model
       surv_obj <- Surv(time = as.numeric(dds_filtered_surv$days_to_death), event = dds_filtered_surv$s)
       fit <- survfit(surv_obj ~ type, data = dds_filtered_surv)
@@ -127,9 +127,9 @@ for (signature in colnames(scores)) {
       if (pval < THRESHOLD) {
         # survival legend title
         if (pval < 0.00001) {
-          surv_title <- paste0("Expression groups (p-val < 0.0001)")
+          surv_title <- paste0(project, " - ", signature, "Expression (p-val < 0.0001)")
         } else {
-          surv_title <- paste0("Expression groups (p-val = ", round(pval, 5), ")")
+          surv_title <- paste0(project, " - ", signature, "Expression (p-val = ", round(pval, 5), ")")
         }
         # custom legend labels with sample sizes
         label.add.n <- function(x) {
@@ -147,12 +147,12 @@ for (signature in colnames(scores)) {
           pval = FALSE,
           conf.int = FALSE,
           fontsize = 50,
-          xlab = "Time (months)",
+          xlab = "Time (years)",
           ylab = "Survival probability",
           legend.title = surv_title,
           legend.labs = legend_labels,
           palette = c("#255BA8", "#ED412B"),
-          break.time.by = 12
+          break.time.by = 1
         )
         ggsave(filename = paste0("./screening/survival/", project, "/Survival_", signature, "_", percentile * 100, "pct.png"), plot = p$plot, dpi = DPI, width = 6, height = 4)
         # filter dds object for PCA
@@ -170,7 +170,7 @@ for (signature in colnames(scores)) {
         theme_minimal() +
         labs(color = "Expression groups")
         # save PCA as png
-        ggsave(filename = paste0("./screening/PCA/", project, "/PCA_", signature, "_", percentile * 100, "pct.png"), dpi = DPI, width = 6 * FACTOR, height = 4 * FACTOR)
+        ggsave(filename = paste0("./screening/PCA/", project, "/PCA_", signature, "_", percentile * 100, "pct.png"), dpi = DPI, width = 6, height = 4)
     }
     }, error = function(e) {
 

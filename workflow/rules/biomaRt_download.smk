@@ -12,8 +12,9 @@ rule biomaRt_download:
         "../../envs/tcga_smk.yml"
     log:
         "<logs>/biomaRt_download.log"
+    retries:
+        3
     shell:
         """
         Rscript scripts/biomaRt_download.R {output} > {log} 2>&1
         """
-        ######### --latency-wait 30

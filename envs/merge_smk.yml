@@ -1,0 +1,7 @@
+name: r-openxlsx-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - r-base
+  - r-openxlsx
