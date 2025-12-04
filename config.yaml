@@ -3,7 +3,7 @@ TCGA_cohorts: 'config/tcga_projects.txt'
 signatures_file: 'config/gene_signatures.txt'
 
 # params for survival_screening.smk
-DPI: 100
+DPI: 400
 THRESHOLD: 0.05
 
 # define pathvars
@@ -28,4 +28,8 @@ resources:
   TCGA_download:
     mem: 20G
     time: 4:00:00
+    threads: 3
+  merge_survival_results:
+    mem: 5G
+    time: 1:00:00
     threads: 3
