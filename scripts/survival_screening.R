@@ -127,9 +127,9 @@ for (signature in colnames(scores)) {
       if (pval < THRESHOLD) {
         # survival legend title
         if (pval < 0.00001) {
-          surv_title <- paste0(project, " - ", signature, "Expression (p-val < 0.0001)")
+          surv_title <- paste0(project, " - ", signature, "\n", "Expression (p-val < 0.0001)")
         } else {
-          surv_title <- paste0(project, " - ", signature, "Expression (p-val = ", round(pval, 5), ")")
+          surv_title <- paste0(project, " - ", signature, "\n", "Expression (p-val = ", round(pval, 5), ")")
         }
         # custom legend labels with sample sizes
         label.add.n <- function(x) {
@@ -166,7 +166,7 @@ for (signature in colnames(scores)) {
         scale_color_manual(values = c("Low" = "#255BA8", "High" = "#ED412B")) +
         xlab(paste0("PC1: ", percentVar[1], "% variance")) +
         ylab(paste0("PC2: ", percentVar[2], "% variance")) +
-        ggtitle(paste0("PCA - ", signature, " - ", percentile * 100, "pct")) +
+        ggtitle(paste0(project, " - PCA - ", signature, " - ", percentile * 100, "pct")) +
         theme_minimal() +
         labs(color = "Expression groups")
         # save PCA as png

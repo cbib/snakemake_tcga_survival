@@ -35,8 +35,8 @@ rule rule_separate_cohorts:
     input:
         "<results>/rds/TCGA-SKCM_STAR_Counts.rds"
     output:
-        outfile_prim = "<results>/rds/TCGA-SKCM_met_STAR_Counts.rds",
-        outfile_met = "<results>/rds/TCGA-SKCM_prim_STAR_Counts.rds"
+        outfile_prim = "<results>/rds/TCGA-SKCM_prim_STAR_Counts.rds",
+        outfile_met = "<results>/rds/TCGA-SKCM_met_STAR_Counts.rds"
     threads:
         config["resources"]["TCGA_download"]["threads"]
     conda:

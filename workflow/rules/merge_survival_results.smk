@@ -18,8 +18,6 @@ rule merge_survival_results:
     input:
         cohorts = os.path.abspath(config["TCGA_cohorts"]),
         tsv_files = lambda wildcards: survival_output(wildcards)
-    # params:
-    #     out_path_survival = "<results>/screening/survival/"
     output:
         "<results>/screening/survival/merged_per_signature.xlsx"
     threads:
