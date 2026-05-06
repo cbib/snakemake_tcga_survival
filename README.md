@@ -62,7 +62,7 @@ The first run of the workflow will download the TCGA data from the Genomics Data
 After the first run, the workflow will not re-download the TCGA data unless the output directory on the config file is changed.
 <br>
 <br>
-Once the data is available, **the workflow runs end-to-end in <5 minutes** in our high performance computing (HPC) cluster with a slurm scheduler, given that each step and cohort is processed in an independent job.
+Once the data is available, **the workflow with the provided example gene list runs end-to-end in <5 minutes** in our high performance computing (HPC) cluster with a slurm scheduler, given that each step and cohort is processed in an independent job.
 
 ```
 Our HPC specifications
