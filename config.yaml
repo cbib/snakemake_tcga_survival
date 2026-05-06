@@ -8,8 +8,8 @@ THRESHOLD: 0.05
 
 # define pathvars
 pathvars:
-  results: '/scratch/CBIB/soterino/smk_tcga_results'
-  logs: '/scratch/CBIB/soterino/smk_logs'
+  results: '/scratch/CBiB/soterino/smk_tcga_results'
+  logs: '/scratch/CBiB/soterino/smk_logs'
 
 # set resources per rule
 resources:

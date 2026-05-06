@@ -14,8 +14,6 @@ signatures_file <- args[3]
 project <- args[4]
 survival_table <- args[5]
 GDC_dir <- survival_table %>% dirname() %>% dirname() %>% dirname() %>% dirname() 
-# # correct aspect ratio of plots
-# FACTOR = DPI / 100
 
 # set working directory to output directory
 setwd(GDC_dir)
@@ -118,6 +116,15 @@ for (signature in colnames(scores)) {
       # survival model
       surv_obj <- Surv(time = as.numeric(dds_filtered_surv$days_to_death), event = dds_filtered_surv$s)
       fit <- survfit(surv_obj ~ type, data = dds_filtered_surv)
+      # Cox proportional hazards model for HR
+      cox_model <- coxph(surv_obj ~ type, data = dds_filtered_surv)
+      cox_summary <- summary(cox_model)
+
+      # Extract HR (High vs Low)
+      hr <- round(cox_summary$coefficients[,"exp(coef)"], 2)
+      hr_conf_low <- round(cox_summary$conf.int[,"lower .95"], 2)
+      hr_conf_high <- round(cox_summary$conf.int[,"upper .95"], 2)
+
       # extract p-value
       # create the Kaplan-Meier plot only if p-value < THRESHOLD
       # create the PCA only under the same condition
@@ -125,12 +132,26 @@ for (signature in colnames(scores)) {
       # save the p-value in the matrix
       surv_pval_mat[signature, paste0(percentile * 100, "pct")] <- pval
       if (pval < THRESHOLD) {
-        # survival legend title
+        # format p-value text
         if (pval < 0.00001) {
-          surv_title <- paste0(project, " - ", signature, "\n", "Expression (p-val < 0.0001)")
+          pval_text <- "p < 0.0001"
         } else {
-          surv_title <- paste0(project, " - ", signature, "\n", "Expression (p-val = ", round(pval, 5), ")")
+          pval_text <- paste0("p = ", signif(pval, 3))
         }
+
+        # format HR and p-value for the figure bottom left information
+        annotation_text <- paste0(
+          pval_text, "\n",
+          "HR = ", hr, " (", hr_conf_low, ", ", hr_conf_high, ")" 
+        )
+
+        # format figure title
+        surv_title <- paste0(
+          project, "\n",
+          signature, " (", percentile * 100, "th percentile)\n",
+          "HR = ", hr, " (95% CI ", hr_conf_low, "–", hr_conf_high, ")"
+        )
+
         # custom legend labels with sample sizes
         label.add.n <- function(x) {
           n <- sum(dds_filtered_surv$type == x)
@@ -138,7 +159,7 @@ for (signature in colnames(scores)) {
         }
         legend_labels <- sapply(levels(dds_filtered_surv$type), label.add.n)
 
-        # plot survival
+        # create survival plot
         p <- ggsurvplot(
           fit,
           data = dds_filtered_surv,
@@ -146,15 +167,30 @@ for (signature in colnames(scores)) {
           risk.table = FALSE,
           pval = FALSE,
           conf.int = FALSE,
-          fontsize = 50,
+          fontsize = 5,
           xlab = "Time (years)",
           ylab = "Survival probability",
-          legend.title = surv_title,
+          title = surv_title,
+          legend.title = "Expression",
           legend.labs = legend_labels,
           palette = c("#255BA8", "#ED412B"),
-          break.time.by = 1
+          break.time.by = 3
         )
-        ggsave(filename = paste0("./screening/survival/", project, "/Survival_", signature, "_", percentile * 100, "pct.png"), plot = p$plot, dpi = DPI, width = 6, height = 4)
+
+        # include p-value in survival figure
+        p$plot <- p$plot +
+          annotate(
+            "text",
+            x = 0,
+            y = 0.03,
+            label = annotation_text,
+            hjust = 0,
+            vjust = 0,
+            size = 4
+          )
+        
+        # save file
+        ggsave(filename = paste0("./screening/survival/", project, "/Survival_", signature, "_", percentile * 100, "pct.png"), plot = p$plot, dpi = DPI, width = 6, height = 5)
         # filter dds object for PCA
         dds_filtered_pca <- dds[, rownames(dds_filtered)]
         # calculate PC1 and PC2 for PCA plot
