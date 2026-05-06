@@ -15,9 +15,7 @@ The workflow:
 
 The workflow is modular, scalable across TCGA projects, and fully reproducible through conda-managed environments.
 
-<br>
-
-################################################################################ INSERT FIGURE SUMMARIZING THE workflow STEPS ################################################################################
+![](scheme.png)
 
 ## Repository structure
 
@@ -261,17 +259,15 @@ If you use the workflow in your analyses, please, cite our original manuscript.
 > *Spatial and bulk transcriptomic profiling defines the molecular
 > evolution of cutaneous squamous cell carcinoma and reveals
 > stage-specific biomarkers of clinical relevance.*
+> bioRxiv (2026). https://doi.org/10.64898/2026.04.30.721943
 
 <br>
 
 
 ## Contact and Support
 
-The code in this repository was developed by
-**Sergio Oterino-Sogo**
+The code in this repository was developed by Sergio Oterino Sogo.
 
-LinkedIn:
-https://www.linkedin.com/in/sergio-oterino-sogo-phd-181962164/
+LinkedIn: [Sergio Oterino Sogo, PhD](https://www.linkedin.com/in/sergio-oterino-sogo-phd-181962164/)
 
-For reproducibility issues, please open a GitHub issue:
-https://github.com/cbib/cSCC_continuum_analyses/issues
+For reproducibility issues, please [open a GitHub issue](https://github.com/cbib/cSCC_continuum_analyses/issues).
