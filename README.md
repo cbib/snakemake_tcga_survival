@@ -85,7 +85,7 @@ The workflow performs the following steps:
 * RNA-seq counts and clinical metadata for each cohort are downloaded from the GDC, leveraging TCGAbiolinks.
 * Skin cutaneous melanoma cohort (TCGA-SKCM) is split in primary and metastatic cases (`TCGA_split_SKCM.R`). (*)
 
-**2) Gene annotation harmonization** (`biomaRt_download.smk` → `bioMart_download.R
+**2) Gene annotation harmonization** (`biomaRt_download.smk` → `bioMart_download.R`)
 * Ensembl gene IDs are converted to HGNC gene symbols using biomaRt.
 
 **3) Expression Normalization** (`DESeq2_normalization.smk` → `DESeq2_normalization.R`)
